@@ -1,0 +1,17 @@
+.mlyn-event-focal-preview-label {
+	margin-bottom: 6px;
+	font-weight: 600;
+}
+
+.mlyn-event-focal-preview {
+	width: 100%;
+	margin-bottom: 10px;
+	aspect-ratio: 16 / 5;
+	border: 1px solid #c3c4c7;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+#mlyn-event-image-focal-point-control .components-focal-point-picker-wrapper {
+	margin-bottom: 12px;
+}

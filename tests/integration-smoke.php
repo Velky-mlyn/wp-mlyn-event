@@ -23,6 +23,8 @@ try {
 	$organizer_ids = get_posts( array( 'post_type' => 'tribe_organizer', 'post_status' => 'publish', 'posts_per_page' => 1, 'fields' => 'ids' ) );
 	$tag_ids       = get_terms( array( 'taxonomy' => 'post_tag', 'hide_empty' => false, 'number' => 1, 'fields' => 'ids' ) );
 	$category_ids  = get_terms( array( 'taxonomy' => 'tribe_events_cat', 'hide_empty' => false, 'number' => 1, 'fields' => 'ids' ) );
+	$image_ids     = get_posts( array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'post_status' => 'inherit', 'posts_per_page' => 1, 'fields' => 'ids' ) );
+	$assert( ! empty( $image_ids ), 'No image attachment is available for the focal-point test.' );
 	$venue_id      = (int) ( $venue_ids[0] ?? 0 );
 	$organizer_id  = (int) ( $organizer_ids[0] ?? 0 );
 	$start         = new DateTimeImmutable( 'first day of next month 09:00:00', wp_timezone() );
@@ -52,12 +54,14 @@ try {
 	)->create();
 	$source_id = $created instanceof WP_Post ? $created->ID : (int) $created;
 	$assert( $source_id > 0, 'Could not create the duplicate source event.' );
+	set_post_thumbnail( $source_id, (int) $image_ids[0] );
 	wp_set_object_terms( $source_id, array_map( 'intval', (array) $tag_ids ), 'post_tag', false );
 	wp_set_object_terms( $source_id, array_map( 'intval', (array) $category_ids ), 'tribe_events_cat', false );
 	update_post_meta( $source_id, '_EventCurrencyCode', 'CZK' );
 	update_post_meta( $source_id, '_edit_lock', '123:1' );
 	update_post_meta( $source_id, '_mei_sync_identity', 'must-not-be-copied' );
 	$assert( true === mlyn_event_set_occupancy( $source_id, null, 0, 'Pouze pro ZŠ Zenklova' ), 'Could not set source occupancy.' );
+	$assert( true === mlyn_event_set_image_focal_point( $source_id, 24, 16 ), 'Could not set the source image focal point.' );
 
 	$duplicated   = Mlyn_Event\Plugin::instance()->duplicate_event( $source_id );
 	$duplicate_id = is_wp_error( $duplicated ) ? 0 : (int) $duplicated;
@@ -76,6 +80,8 @@ try {
 	$assert( wp_get_object_terms( $source_id, 'tribe_events_cat', array( 'fields' => 'ids' ) ) === wp_get_object_terms( $duplicate_id, 'tribe_events_cat', array( 'fields' => 'ids' ) ), 'Event categories were not copied.' );
 	$occupancy = mlyn_event_get_occupancy( $duplicate_id );
 	$assert( null === $occupancy['capacity'] && 0 === $occupancy['available_places'] && true === $occupancy['fully_occupied'] && 'Pouze pro ZŠ Zenklova' === $occupancy['note'], 'Occupancy was not copied.' );
+	$point = mlyn_event_get_image_focal_point( $duplicate_id );
+	$assert( true === $point['specified'] && 24 === $point['x'] && 16 === $point['y'], 'The image focal point was not copied.' );
 	$assert( ! metadata_exists( 'post', $duplicate_id, '_edit_lock' ), 'The edit lock was copied.' );
 	$assert( ! metadata_exists( 'post', $duplicate_id, '_mei_sync_identity' ), 'An intake synchronization identity was copied.' );
 

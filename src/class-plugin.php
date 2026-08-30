@@ -22,8 +22,12 @@ final class Plugin {
 	private function __construct() {
 		$this->duplicator = new Event_Duplicator();
 		add_action( 'init', array( Occupancy::class, 'register_meta' ) );
+		add_action( 'init', array( Image_Focal_Point::class, 'register_meta' ) );
 		add_action( 'add_meta_boxes_tribe_events', array( Occupancy::class, 'register_meta_box' ) );
+		add_action( 'add_meta_boxes_tribe_events', array( Image_Focal_Point::class, 'register_meta_box' ) );
 		add_action( 'save_post_tribe_events', array( Occupancy::class, 'save_from_editor' ), 10, 2 );
+		add_action( 'save_post_tribe_events', array( Image_Focal_Point::class, 'save_from_editor' ), 10, 2 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
 		add_filter( 'post_row_actions', array( $this, 'add_duplicate_row_action' ), 10, 2 );
 		add_action( 'admin_post_mlyn_duplicate_event', array( $this, 'handle_duplicate_event' ) );
 		add_action( 'admin_notices', array( $this, 'render_admin_notices' ) );
@@ -76,12 +80,41 @@ final class Plugin {
 		return $this->duplicator->duplicate( $event_id );
 	}
 
+	public function enqueue_admin_assets(): void {
+		$screen = get_current_screen();
+		if ( ! $screen || 'tribe_events' !== $screen->post_type || ! in_array( $screen->base, array( 'post', 'post-new' ), true ) ) {
+			return;
+		}
+		wp_enqueue_media();
+		wp_enqueue_style( 'wp-components' );
+		wp_enqueue_style( 'mlyn-event-admin', plugins_url( 'assets/admin.css', MLYN_EVENT_FILE ), array( 'wp-components' ), MLYN_EVENT_VERSION );
+		wp_enqueue_script(
+			'mlyn-event-admin',
+			plugins_url( 'assets/admin.js', MLYN_EVENT_FILE ),
+			array( 'wp-components', 'wp-element', 'media-editor' ),
+			MLYN_EVENT_VERSION,
+			true
+		);
+		wp_localize_script(
+			'mlyn-event-admin',
+			'mlynEventAdmin',
+			array(
+				'noImage'      => __( 'Nejprve nastavte náhledový obrázek akce.', 'mlyn-event' ),
+				'previewLabel' => __( 'Náhled banneru detailu', 'mlyn-event' ),
+				'reset'        => __( 'Nastavit na střed', 'mlyn-event' ),
+			)
+		);
+	}
+
 	public function render_admin_notices(): void {
 		if ( isset( $_GET['mlyn_event_occupancy_invalid'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Obsazenost nebyla uložena. Zadejte nezáporná celá čísla; pokud jsou vyplněna obě pole, počet volných míst nesmí překročit kapacitu.', 'mlyn-event' ) . '</p></div>';
 		}
 		if ( isset( $_GET['mlyn_event_duplicated'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Akce byla duplikována jako koncept.', 'mlyn-event' ) . '</p></div>';
+		}
+		if ( isset( $_GET['mlyn_event_focal_point_invalid'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Bod výřezu obrázku nebyl uložen. Zvolte hodnoty od 0 do 100.', 'mlyn-event' ) . '</p></div>';
 		}
 		if ( ! post_type_exists( 'tribe_events' ) && current_user_can( 'activate_plugins' ) ) {
 			echo '<div class="notice notice-warning"><p>' . esc_html__( 'Mlýn Event vyžaduje aktivní plugin The Events Calendar.', 'mlyn-event' ) . '</p></div>';

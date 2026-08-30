@@ -69,6 +69,16 @@ final class Event_Duplicator {
 			wp_delete_post( $duplicate->ID, true );
 			return $result;
 		}
+		$focal_point = Image_Focal_Point::get( $event_id );
+		$result      = Image_Focal_Point::set(
+			$duplicate->ID,
+			$focal_point['specified'] ? $focal_point['x'] : null,
+			$focal_point['specified'] ? $focal_point['y'] : null
+		);
+		if ( is_wp_error( $result ) ) {
+			wp_delete_post( $duplicate->ID, true );
+			return $result;
+		}
 
 		do_action( 'mlyn_event_duplicated', $duplicate->ID, $event_id );
 		return $duplicate->ID;
