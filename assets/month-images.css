@@ -1,0 +1,39 @@
+/* Every lane in a week must reserve the same height, including TEC spacers.
+ * Otherwise overlapping bars shift into another event's lane on later days. */
+.tribe-events .tribe-events-calendar-month__week:has(.mlyn-event-month-image) .tribe-events-calendar-month__multiday-event-wrapper {
+	height: 96px;
+	margin-bottom: 6px;
+}
+
+.tribe-events .tribe-events-calendar-month__week:has(.mlyn-event-month-image) .tribe-events-calendar-month__multiday-event-bar-inner {
+	box-sizing: border-box;
+	height: 96px;
+	padding: 8px;
+}
+
+.tribe-events .mlyn-event-month-image-wrapper {
+	display: flex;
+	flex: 0 1 120px;
+	min-width: 0;
+	align-items: center;
+	justify-content: center;
+	margin-right: 10px;
+}
+
+.tribe-events .mlyn-event-month-image {
+	display: block;
+	width: 120px;
+	max-width: 100%;
+	height: 80px;
+	object-fit: contain;
+}
+
+.tribe-events .tribe-events-calendar-month__week:has(.mlyn-event-month-image) .tribe-events-calendar-month__multiday-event-bar-title {
+	flex: 1 1 auto;
+	min-width: 0;
+	white-space: normal;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	overflow: hidden;
+}

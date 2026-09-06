@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Mlýn Event
  * Description:       Event occupancy and administrative tools for The Events Calendar.
- * Version:           1.1.0
+ * Version:           1.2.1
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Requires Plugins:  the-events-calendar
@@ -15,13 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MLYN_EVENT_VERSION', '1.1.0' );
+define( 'MLYN_EVENT_VERSION', '1.2.1' );
 define( 'MLYN_EVENT_FILE', __FILE__ );
 define( 'MLYN_EVENT_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once MLYN_EVENT_DIR . 'src/class-occupancy.php';
 require_once MLYN_EVENT_DIR . 'src/class-image-focal-point.php';
 require_once MLYN_EVENT_DIR . 'src/class-event-duplicator.php';
+require_once MLYN_EVENT_DIR . 'src/class-month-images.php';
 require_once MLYN_EVENT_DIR . 'src/class-plugin.php';
 
 add_action(

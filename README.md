@@ -13,6 +13,10 @@ Site-specific WP add-on plugin providing event metadata and administrative tools
 - Copies supported event content, dates, venue, organizers, terms, image, presentation settings, occupancy, and image focal point without copying generated or intake synchronization identities.
 - Defers to the native duplicate feature if Events Calendar Pro is active.
 
+## Month-view images
+
+Multi-day events with featured images show a thumbnail inside their own date-span bar, beside the title, on each visible weekly segment. Weeks with images use equal-height multi-day lanes so overlapping bars and empty continuation slots stay aligned. Existing bars and hover tooltips remain available. Events without an image keep the standard TEC presentation. This uses TEC template hooks and does not modify the official plugin or duplicate its templates. The mobile month view continues to use TEC's native day-selection/event-list interface.
+
 ## Public API
 
 - `mlyn_event_get_occupancy( $event_id )`
@@ -24,6 +28,14 @@ Site-specific WP add-on plugin providing event metadata and administrative tools
 - `mlyn_event_duplicated` action after a successful duplicate
 
 ## Changelog
+
+### 1.2.1
+
+- Moved multi-day thumbnails inside their event bars and aligned overlapping lanes across each week.
+
+### 1.2.0
+
+- Added visible featured-image thumbnails for multi-day events in the month grid.
 
 ### 1.1.0
 
