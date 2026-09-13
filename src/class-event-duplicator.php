@@ -80,6 +80,8 @@ final class Event_Duplicator {
 			return $result;
 		}
 
+		End_Time::set( $duplicate->ID, End_Time::unknown( $event_id ), false );
+
 		do_action( 'mlyn_event_duplicated', $duplicate->ID, $event_id );
 		return $duplicate->ID;
 	}

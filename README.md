@@ -27,7 +27,17 @@ Multi-day events with featured images show a thumbnail inside their own date-spa
 - `mlyn_event_image_focal_point_updated` action after a focal-point update
 - `mlyn_event_duplicated` action after a successful duplicate
 
+## Unknown end times
+
+The event editor includes **Čas konce není znám**, implemented with native WordPress metadata. Keep a final date for multi-day or overnight events. TEC stores 23:59:59 on that date in the event timezone for expiry, duration and occurrence queries; the clock time is omitted from public schedules, REST end fields, JSON-LD and ICS exports. All-day events retain their existing behavior. Google Calendar receives equal start/end timestamps and an explanatory note because its template links require a date range; calendar applications may assign their own duration. ICS includes X-MLYN-END-DATE to retain the final date without asserting a known end time.
+
+`mlyn_event_end_time_unknown( $id )` reads the flag; `mlyn_event_set_end_time_unknown( $id, $unknown, $notify = true )` updates it and emits `mlyn_event_end_time_updated`. Duplicates preserve the flag. Existing events are not automatically reclassified, including events with equal start/end timestamps.
+
 ## Changelog
+
+### 1.3.0
+
+- Added per-event unknown end times, finite internal expiry, public output filters and duplication support.
 
 ### 1.2.1
 

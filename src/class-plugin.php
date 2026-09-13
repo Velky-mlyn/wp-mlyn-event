@@ -22,6 +22,7 @@ final class Plugin {
 	private function __construct() {
 		$this->duplicator = new Event_Duplicator();
 		Month_Images::register();
+		End_Time::register();
 		add_action( 'init', array( Occupancy::class, 'register_meta' ) );
 		add_action( 'init', array( Image_Focal_Point::class, 'register_meta' ) );
 		add_action( 'add_meta_boxes_tribe_events', array( Occupancy::class, 'register_meta_box' ) );

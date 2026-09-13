@@ -84,3 +84,27 @@
 	if (wp.element.createRoot) wp.element.createRoot(rootNode).render(createElement(App));
 	else wp.element.render(createElement(App), rootNode);
 }());
+
+// Keep the final date editable while suppressing the unknown clock time.
+document.addEventListener('DOMContentLoaded', function () {
+	const checkbox = document.getElementById('mlyn-end-time-unknown');
+	const end = document.getElementById('EventEndTime');
+	const allDay = document.getElementById('EventAllDay');
+	if (!checkbox || !end) return;
+	let previous = end.value;
+	function update() {
+		if (allDay && allDay.checked) checkbox.checked = false;
+		checkbox.disabled = Boolean(allDay && allDay.checked);
+		if (checkbox.checked) {
+			if (!end.disabled) previous = end.value;
+			end.disabled = true;
+			end.value = '';
+		} else {
+			end.disabled = false;
+			if (!end.value) end.value = previous;
+		}
+	}
+	checkbox.addEventListener('change', update);
+	if (allDay) allDay.addEventListener('change', update);
+	update();
+});

@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Mlýn Event
  * Description:       Event occupancy and administrative tools for The Events Calendar.
- * Version:           1.2.1
+ * Version:           1.3.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Requires Plugins:  the-events-calendar
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MLYN_EVENT_VERSION', '1.2.1' );
+define( 'MLYN_EVENT_VERSION', '1.3.0' );
 define( 'MLYN_EVENT_FILE', __FILE__ );
 define( 'MLYN_EVENT_DIR', plugin_dir_path( __FILE__ ) );
 
@@ -23,6 +23,7 @@ require_once MLYN_EVENT_DIR . 'src/class-occupancy.php';
 require_once MLYN_EVENT_DIR . 'src/class-image-focal-point.php';
 require_once MLYN_EVENT_DIR . 'src/class-event-duplicator.php';
 require_once MLYN_EVENT_DIR . 'src/class-month-images.php';
+require_once MLYN_EVENT_DIR . 'src/class-end-time.php';
 require_once MLYN_EVENT_DIR . 'src/class-plugin.php';
 
 add_action(
@@ -62,4 +63,11 @@ function mlyn_event_get_image_focal_point( int $event_id ): array {
  */
 function mlyn_event_set_image_focal_point( int $event_id, ?int $x, ?int $y, bool $notify = true ) {
 	return Mlyn_Event\Image_Focal_Point::set( $event_id, $x, $y, $notify );
+}
+
+function mlyn_event_end_time_unknown( int $event_id ): bool {
+	return Mlyn_Event\End_Time::unknown( $event_id );
+}
+function mlyn_event_set_end_time_unknown( int $event_id, bool $unknown, bool $notify = true ) {
+	return Mlyn_Event\End_Time::set( $event_id, $unknown, $notify );
 }
