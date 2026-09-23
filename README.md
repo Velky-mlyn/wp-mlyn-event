@@ -4,6 +4,8 @@ Site-specific WP add-on plugin providing event metadata and administrative tools
 
 ## Features
 
+- Adds a separate administrator-only organizer logo selector with a Media Library preview.
+
 - Adds optional capacity, available-place, and occupancy-note fields to events.
 - Adds a featured-image focal-point picker and detail-banner preview to event editing.
 - Treats an explicit zero available-place value as fully occupied even when capacity is empty.
@@ -18,6 +20,9 @@ Site-specific WP add-on plugin providing event metadata and administrative tools
 Multi-day events with featured images show a thumbnail inside their own date-span bar, beside the title, on each visible weekly segment. Weeks with images use equal-height multi-day lanes so overlapping bars and empty continuation slots stay aligned. Existing bars and hover tooltips remain available. Events without an image keep the standard TEC presentation. This uses TEC template hooks and does not modify the official plugin or duplicate its templates. The mobile month view continues to use TEC's native day-selection/event-list interface.
 
 ## Public API
+
+- `mlyn_event_get_organizer_logo_id( $organizer_id )` returns a valid logo attachment ID or zero.
+- `mlyn_event_organizer_logo_updated` action receives organizer ID, new logo ID, and previous logo ID after a change.
 
 - `mlyn_event_get_occupancy( $event_id )`
 - `mlyn_event_set_occupancy( $event_id, $capacity, $available_places, $note, $notify = true )`
@@ -34,6 +39,10 @@ The event editor includes **Čas konce není znám**, implemented with native Wo
 `mlyn_event_end_time_unknown( $id )` reads the flag; `mlyn_event_set_end_time_unknown( $id, $unknown, $notify = true )` updates it and emits `mlyn_event_end_time_updated`. Duplicates preserve the flag. Existing events are not automatically reclassified, including events with equal start/end timestamps.
 
 ## Changelog
+
+### 1.4.0
+
+- Added **Logo pořadatele** to organizer editing for administrators, with image selection/upload, preview, replacement and removal. Save the organizer to persist changes. Logos remain separate from featured images for future promo-banner generation.
 
 ### 1.3.0
 
