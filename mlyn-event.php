@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Mlýn Event
  * Description:       Event occupancy and administrative tools for The Events Calendar.
- * Version:           1.4.0
+ * Version:           1.5.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Requires Plugins:  the-events-calendar
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MLYN_EVENT_VERSION', '1.4.0' );
+define( 'MLYN_EVENT_VERSION', '1.5.0' );
 define( 'MLYN_EVENT_FILE', __FILE__ );
 define( 'MLYN_EVENT_DIR', plugin_dir_path( __FILE__ ) );
 
@@ -25,6 +25,9 @@ require_once MLYN_EVENT_DIR . 'src/class-event-duplicator.php';
 require_once MLYN_EVENT_DIR . 'src/class-month-images.php';
 require_once MLYN_EVENT_DIR . 'src/class-end-time.php';
 require_once MLYN_EVENT_DIR . 'src/class-organizer-logo.php';
+require_once MLYN_EVENT_DIR . 'src/class-promo-renderer.php';
+require_once MLYN_EVENT_DIR . 'src/class-promo-banner.php';
+require_once MLYN_EVENT_DIR . 'src/class-promo-admin.php';
 require_once MLYN_EVENT_DIR . 'src/class-plugin.php';
 
 add_action(
@@ -76,4 +79,14 @@ function mlyn_event_set_end_time_unknown( int $event_id, bool $unknown, bool $no
 /** Return a valid organizer logo attachment ID, or zero. */
 function mlyn_event_get_organizer_logo_id( int $organizer_id ): int {
 	return Mlyn_Event\Organizer_Logo::get( $organizer_id );
+}
+
+/** Current promo image only; returns zero when disabled, missing or stale. */
+function mlyn_event_get_promo_banner_id( int $event_id ): int {
+	return Mlyn_Event\Promo_Banner::attachment( $event_id );
+}
+
+/** Explicit promo consumer API; clean featured image remains the fallback. */
+function mlyn_event_get_promo_image_id( int $event_id ): int {
+	return mlyn_event_get_promo_banner_id( $event_id ) ?: (int) get_post_thumbnail_id( $event_id );
 }

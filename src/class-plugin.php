@@ -24,6 +24,8 @@ final class Plugin {
 		Month_Images::register();
 		End_Time::register();
 		Organizer_Logo::register();
+		Promo_Banner::register();
+		Promo_Admin::register();
 		add_action( 'init', array( Occupancy::class, 'register_meta' ) );
 		add_action( 'init', array( Image_Focal_Point::class, 'register_meta' ) );
 		add_action( 'add_meta_boxes_tribe_events', array( Occupancy::class, 'register_meta_box' ) );

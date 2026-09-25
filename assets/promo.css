@@ -1,0 +1,88 @@
+.mlyn-promo-field {
+    display: block;
+    margin: 14px 0;
+}
+
+.mlyn-promo-field>span {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.mlyn-promo-field input[type=text],
+.mlyn-promo-field textarea {
+    width: 100%;
+    max-width: 760px;
+}
+
+.mlyn-promo-picker {
+    margin: 12px 0;
+}
+
+.mlyn-promo-thumb img {
+    max-width: 240px;
+    max-height: 140px;
+    width: auto;
+    height: auto;
+    background: #eee;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.mlyn-promo-output img {
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    border: 1px solid #ddd;
+}
+
+.mlyn-promo-message {
+    font-weight: 600;
+}
+
+.mlyn-promo-warnings {
+    color: #754b00;
+}
+
+.mlyn-promo-editor [hidden],
+.mlyn-promo-settings [hidden] {
+    display: none !important;
+}
+
+.mlyn-promo-fields {
+    margin-top: 18px;
+    margin-bottom: 18px;
+    padding: 0 16px;
+    border-left: 3px solid #ddd;
+}
+
+.mlyn-promo-settings {
+    max-width: 1000px;
+}
+
+.mlyn-promo-logo-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.mlyn-promo-logo-row>label:first-of-type {
+    min-width: 190px;
+    flex: 1;
+}
+
+.mlyn-promo-logo-row input[type=number] {
+    width: 75px;
+}
+
+.mlyn-promo-logo-thumb {
+    width: auto;
+    height: auto;
+    max-width: 100px;
+    max-height: 55px;
+    background: #ddd;
+}
